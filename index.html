@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>Case: Restaurant Tracker</title>
+		<meta name="description" content="A basic app for looking up nearby
+        restaurants"/>
+		<meta name="author" content="JStameus" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link href='https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.css'
+              rel='stylesheet' />
+		<link rel="stylesheet" href="style.css" />
+	</head>
+
+	<body>
+        <div id="app_container">
+            <div id="app_viewport">
+                <div id='map'></div>
+                <div>
+                    <button id="button_startSearch">Search Here</button>
+                    <button id="button_addDebugMarker">Add Debug Marker Here</button>
+                    <button id="button_debugDistance">Check Distance</button>
+                </div>
+                <input type="range" name="searchRange" id="input_searchrange"
+                    min=1 max=25>
+                <p id="searchrange_display"></p>
+            </div>
+            <div id="app_cardlist">
+
+            </div>
+        </div> 
+        <script src='https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.js'></script>
+		<script src="script.js"></script>
+	</body>
+</html>
+

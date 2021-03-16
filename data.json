@@ -1,0 +1,164 @@
+{
+    "totalResults": 6,
+    "page": 1,
+    "total_pages": 1,
+    "more_pages": false,
+    "data": [
+        {
+            "restaurant_name": "Casey's General Store",
+            "restaurant_phone": "(816) 633-8977",
+            "restaurant_website": "http://www.caseys.com",
+            "hours": "",
+            "price_range": "",
+            "price_range_num": 0,
+            "restaurant_id": 3899834693953709,
+            "cuisines": [
+                "American",
+                "Pizza"
+            ],
+            "address": {
+                "city": "ODESSA",
+                "state": "MO",
+                "postal_code": "64076",
+                "street": "300 S 2nd St",
+                "formatted": "300 S 2nd St ODESSA, MO 64076"
+            },
+            "geo": {
+                "lat": 38.998346,
+                "lon": -93.953709
+            },
+            "menus": [],
+            "last_updated": "2021-01-05T06:54:40.532Z"
+        },
+        {
+            "restaurant_name": "Daylight Donuts",
+            "restaurant_phone": "(816) 230-5395",
+            "restaurant_website": "http://www.daylightdonuts.com/",
+            "hours": "",
+            "price_range": "",
+            "price_range_num": 0,
+            "restaurant_id": 3900169293953516,
+            "cuisines": [
+                "American",
+                "Bakery & Pastries",
+                "Coffee & Tea"
+            ],
+            "address": {
+                "city": "ODESSA",
+                "state": "MO",
+                "postal_code": "64076",
+                "street": "100 S 2nd St",
+                "formatted": "100 S 2nd St ODESSA, MO 64076"
+            },
+            "geo": {
+                "lat": 39.001692,
+                "lon": -93.953516
+            },
+            "menus": [],
+            "last_updated": "2021-01-05T06:54:40.476Z"
+        },
+        {
+            "restaurant_name": "Taco John's",
+            "restaurant_phone": "(816) 633-8662",
+            "restaurant_website": "",
+            "hours": "",
+            "price_range": "",
+            "price_range_num": 0,
+            "restaurant_id": 3900400393953348,
+            "cuisines": [
+                "American",
+                "Mexican"
+            ],
+            "address": {
+                "city": "ODESSA",
+                "state": "MO",
+                "postal_code": "64076",
+                "street": "309 N 2nd St",
+                "formatted": "309 N 2nd St ODESSA, MO 64076"
+            },
+            "geo": {
+                "lat": 39.004003,
+                "lon": -93.953348
+            },
+            "menus": [],
+            "last_updated": "2021-01-05T06:54:40.634Z"
+        },
+        {
+            "restaurant_name": "Sonic Drive-In",
+            "restaurant_phone": "(816) 230-5588",
+            "restaurant_website": "https://locations.sonicdrivein.com/mo/odessa/408-north-second-street.html",
+            "hours": "",
+            "price_range": "",
+            "price_range_num": 0,
+            "restaurant_id": 3900483293952852,
+            "cuisines": [
+                "American",
+                "Burgers"
+            ],
+            "address": {
+                "city": "Odessa",
+                "state": "MO",
+                "postal_code": "64076",
+                "street": "408 North Second Street",
+                "formatted": "408 North Second Street Odessa, MO 64076"
+            },
+            "geo": {
+                "lat": 39.004832,
+                "lon": -93.952852
+            },
+            "menus": [],
+            "last_updated": "2021-01-05T06:54:40.492Z"
+        },
+        {
+            "restaurant_name": "Subway",
+            "restaurant_phone": "(816) 633-8400",
+            "restaurant_website": "https://restaurants.subway.com/united-states/mo/odessa/100-w…m_campaign=evergreen-2020&y_source=1_MTQ4OTkwMDQtNzA4LWxvY2F",
+            "hours": "",
+            "price_range": "",
+            "price_range_num": 0,
+            "restaurant_id": 3900650093951900,
+            "cuisines": [
+                ""
+            ],
+            "address": {
+                "city": "Odessa",
+                "state": "MO",
+                "postal_code": "64076",
+                "street": "100 W 40 Hwy",
+                "formatted": "100 W 40 Hwy Odessa, MO 64076"
+            },
+            "geo": {
+                "lat": 39.0065,
+                "lon": -93.9519
+            },
+            "menus": [],
+            "last_updated": "2021-01-05T06:54:40.681Z"
+        },
+        {
+            "restaurant_name": "Baskin-Robbins",
+            "restaurant_phone": "(816) 625-3308",
+            "restaurant_website": "https://www.baskinrobbins.com?utm_source=Yext&utm_medium=organic&utm_campaign=Yext",
+            "hours": "",
+            "price_range": "",
+            "price_range_num": 0,
+            "restaurant_id": 3901060094071600,
+            "cuisines": [
+                ""
+            ],
+            "address": {
+                "city": "Bates City",
+                "state": "MO",
+                "postal_code": "64011",
+                "street": "202 E US Highway 40",
+                "formatted": "202 E US Highway 40 Bates City, MO 64011"
+            },
+            "geo": {
+                "lat": 39.0106,
+                "lon": -94.0716
+            },
+            "menus": [],
+            "last_updated": "2021-01-05T06:52:32.527Z"
+        }
+    ],
+    "numResults": 6
+}
