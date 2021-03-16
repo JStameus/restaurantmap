@@ -13,7 +13,6 @@ window.onload = () => {
 }
 
 // --- API Settings ---
-//let documenuKey = "8bb10903010e51cfb76da6d356c1d84d";
 let documenuKey = "";
 let APICallURL = "https://api.documenu.com/v2/restaurants/search/geo?lat=39&lon=-94&distance=5";
 // For using locally saved data
@@ -71,6 +70,11 @@ rangeInput.addEventListener("input", () => {
 const rangeDisplay = document.querySelector("#searchrange_display");
 rangeDisplay.innerText = searchDistance;
 
+map.on("dragend", () => {
+    console.log(getCenterCoordinates());
+    updateCenterMarker();
+});
+
 // API call functions
 function fetchAPI(latitude, longitude, distance) {
     clearRestaurantCards();
@@ -95,10 +99,11 @@ function fetchLocal() {
         .then(json => {
             console.log(`Json: ${json}`);
             console.log(`Json.data: ${json.data}`);
-            //for(let i = 0; i < json.data.length; i++) {
-            //    createRestaurantCard(json.data[i]);
-            //}
-            //return json;
+            for(let i = 0; i < json.data.length; i++) {
+                createRestaurantCard(json.data[i]);
+                createRestaurantMarker(json.data[i]);
+            }
+            return json;
         })
         .catch(err => {
             console.log(`ERROR: ${err}`);
@@ -154,11 +159,6 @@ function createRestaurantCard(data) {
 
 function createRestaurantMarker(data) {
     console.log(`Creating marker for: ${data.restaurant_name}`);
-    //console.log("-----DEBUGGING-----");
-    //console.log(data);
-    //console.log(`Lat: ${data.geo.lat}`);
-    //console.log(`Lon: ${data.geo.lon}`);
-    //console.log("-------------------");
     const newMarker = new mapboxgl.Marker()
         .setLngLat([data.geo.lon, data.geo.lat])
         .addTo(map);
@@ -185,18 +185,3 @@ function debugDistance() {
     console.log(distance);
 }
 
-// APP ENTRY POINT
-// When the user moves the map and lets go, it creates a map pin in the middle
-// and then uses the coordinates to find restaurants within the specified range.
-//map.on("drag", () => {
-    //updateCenterMarker();
-//});
-//
-//map.on("zoom", () => {
-    //updateCenterMarker();
-//});
-
-map.on("dragend", () => {
-    console.log(getCenterCoordinates());
-    updateCenterMarker();
-});
