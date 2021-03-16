@@ -33,7 +33,7 @@ let debugMarkers = [];
 let restaurantMarkers = [];
 
 // --- DOM Elements ---
-const cardList = document.querySelector("#app_cardlist");
+const cardList = document.querySelector("#cardlist");
 
 const searchButton = document.querySelector("#button_startSearch");
 searchButton.addEventListener("click", () => {
@@ -45,30 +45,30 @@ searchButton.addEventListener("click", () => {
     }, 1000);
 });
 
-const debugMarkerButton = document.querySelector("#button_addDebugMarker");
-debugMarkerButton.addEventListener("click", () => {
-    console.log("Adding debug marker...");
-    if(debugMarkers.length > 1) {
-        debugMarkers[0].remove();
-        debugMarkers.shift();
-    }
-    createDebugMarker(getCenterCoordinates());
-});
+//const debugMarkerButton = document.querySelector("#button_addDebugMarker");
+//debugMarkerButton.addEventListener("click", () => {
+    //console.log("Adding debug marker...");
+    //if(debugMarkers.length > 1) {
+        //debugMarkers[0].remove();
+        //debugMarkers.shift();
+    //}
+    //createDebugMarker(getCenterCoordinates());
+//});
 
-const checkDistanceButton = document.querySelector("#button_debugDistance");
-checkDistanceButton.addEventListener("click", () => {
-    console.log("Checking distance between debug markers.");
-    debugDistance();
-});
+//const checkDistanceButton = document.querySelector("#button_debugDistance");
+//checkDistanceButton.addEventListener("click", () => {
+    //console.log("Checking distance between debug markers.");
+    //debugDistance();
+//});
 
-const rangeInput = document.querySelector("#input_searchrange");
-rangeInput.addEventListener("input", () => {
-    searchDistance = rangeInput.value;
-    rangeDisplay.innerText = searchDistance;
-});
-
-const rangeDisplay = document.querySelector("#searchrange_display");
-rangeDisplay.innerText = searchDistance;
+//const rangeInput = document.querySelector("#input_searchrange");
+//rangeInput.addEventListener("input", () => {
+    //searchDistance = rangeInput.value;
+    //rangeDisplay.innerText = searchDistance;
+//});
+//
+//const rangeDisplay = document.querySelector("#searchrange_display");
+//rangeDisplay.innerText = searchDistance;
 
 map.on("dragend", () => {
     console.log(getCenterCoordinates());
