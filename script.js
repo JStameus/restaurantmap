@@ -30,7 +30,6 @@ let centerMarker = new mapboxgl.Marker({
     color: "#ff0000",
 });
 let debugMarkers = [];
-let restaurantMarkers = [];
 
 // --- DOM Elements ---
 const cardList = document.querySelector("#cardlist");
@@ -39,7 +38,6 @@ const searchButton = document.querySelector("#button_startSearch");
 searchButton.addEventListener("click", () => {
     console.log("Searching...");
     const coordinates = getCenterCoordinates();
-    restaurantMarkers = [];
     setTimeout(() => {
         fetchAPI(coordinates.lat, coordinates.lng, searchDistance);
     }, 1000);
@@ -82,10 +80,10 @@ function fetchAPI(latitude, longitude, distance) {
     fetch(fullUrl, {headers: {"X-API-KEY": "8bb10903010e51cfb76da6d356c1d84d"}})
         .then(response => response.json())
         .then(json => {
+            map.zoomTo(15.9);
             console.log(json)
             for(let i = 0; i < json.data.length; i++) {
                 createRestaurantCard(json.data[i]);
-                createRestaurantMarker(json.data[i]);
             }
         })
         .catch(err => {
@@ -101,7 +99,6 @@ function fetchLocal() {
             console.log(`Json.data: ${json.data}`);
             for(let i = 0; i < json.data.length; i++) {
                 createRestaurantCard(json.data[i]);
-                createRestaurantMarker(json.data[i]);
             }
             return json;
         })
@@ -135,15 +132,14 @@ function createRestaurantCard(data) {
     restaurantStreet.innerText = data.address.street;
     cardDiv.appendChild(restaurantStreet);
 
-    for (let i = 0; i < data.cuisines.length; i++) {
-        const newTag = document.createElement("h6");
-        newTag.innerText = data.cuisines[i];
-        newTag.className = "cuisinetag";
-        cardDiv.appendChild(newTag);
+    if (data.cuisines.length > 0) {
+        for (let i = 0; i < data.cuisines.length; i++) {
+            const newTag = document.createElement("h5");
+            newTag.innerText = data.cuisines[i];
+            newTag.className = "cuisinetag";
+            cardDiv.appendChild(newTag);
+        }
     }
-
-    const newLine = document.createElement("hr");
-    cardDiv.appendChild(newLine);
 
     const restaurantPhone = document.createElement("p");
     restaurantPhone.innerText = `Phone: ${data.restaurant_phone}`;
@@ -155,6 +151,14 @@ function createRestaurantCard(data) {
 
     cardDiv.className = "restaurantcard";
     cardList.appendChild(cardDiv);
+
+    const newMarker = createRestaurantMarker(data);
+    cardDiv.addEventListener("click", () => {
+        console.log(`Clicked on the card for ${data.restaurant_name}`);
+        map.flyTo({
+            center: newMarker.getLngLat()
+        });
+    });
 }
 
 function createRestaurantMarker(data) {
@@ -162,7 +166,7 @@ function createRestaurantMarker(data) {
     const newMarker = new mapboxgl.Marker()
         .setLngLat([data.geo.lon, data.geo.lat])
         .addTo(map);
-    restaurantMarkers.push(newMarker);
+    return newMarker;
 }
 
 function updateCenterMarker() {
@@ -184,4 +188,3 @@ function debugDistance() {
     const distance = pointA.distanceTo(pointB);
     console.log(distance);
 }
-

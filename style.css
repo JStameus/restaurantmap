@@ -1,10 +1,13 @@
+@import url('https://fonts.googleapis.com/css2?family=Lilita+One&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Barrio&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Oswald&display=swap');
 
 :root {
-    --background-color: #65A775;
-    --foreground-color: #C1E6AD;
-    --dark-color: #35393B;
+    --darkgreen: #65A775;
+    --darkgreen-selected: #549965;
+    --lightgreen: #CEEFBD;
+    --charcoal: #35393B;
+    --dimwhite: #EFEFEF;
 }
 * {
     padding: 0;
@@ -14,10 +17,10 @@
 button {
     margin: 0.2rem 2rem;
 
-    background-color: var(--dark-color);
-    color: var(--foreground-color);
+    background-color: var(--darkgreen);
+    color: var(--lightgreen);
 
-    border: 2px solid var(--foreground-color);
+    border: 2px solid var(--darkgreen);
     border-radius: 200px;
 
     font-family: "Oswald";
@@ -25,11 +28,23 @@ button {
 
 }
 
+button:hover {
+   background-color: var(--darkgreen-selected);
+   border: 2px solid var(--lightgreen);
+   color: var(--dimwhite);
+}
+
+button:active {
+    background-color: var(--lightgreen);
+    border: 2px solid var(--darkgreen);
+    color: var(--charcoal);
+}
+
 #app_container {
     width: 100vw;
     height: 100vh;
 
-    background-color: var(--background-color);
+    background-color: var(--dimwhite);
     display: flex;
     flex-direction: column;
 }
@@ -38,30 +53,69 @@ button {
     font-family: "Barrio";
     font-size: 2.5rem;
     text-align: center;
-    color: var(--foreground-color);
+
+    color: var(--darkgreen);
     flex: 1;
 }
 
 hr {
-    color: var(--foreground-color);
+    color: var(--lightgreen);
     margin: 1rem 3rem;
 }
 
 #map {
-    flex: 4;
     margin: 0 1rem;
+
     border-radius: 6px;
-    border: 2px solid var(--foreground-color);
-    background-color: black;
+    border: 2px solid var(--darkgreen);
+
+    background-color: var(--charcoal);
+    flex: 4;
 }
 
 #cardlist {
-    flex: 3;
-    border: 2px solid var(--foreground-color);
+    border: 2px solid var(--darkgreen);
     border-radius: 6px;
+
     margin: 0.2rem 0.5rem;
     margin-bottom: 0;
+
     overflow-y: scroll;
+
+    flex: 3;
 }
 
+.restaurantcard {
+    margin: 0.4rem;
+    padding: 0.4rem;
 
+    background-color: var(--darkgreen);
+    border: 2px solid var(--charcoal);
+}
+
+.restaurantcard:hover {
+    border: 3px solid var(--lightgreen);
+}
+
+.restaurantcard * {
+    margin: 0.2rem;
+    color: var(--lightgreen);
+    font-family: "Oswald";
+}
+
+.restaurantcard h2 {
+    font-family: "Lilita One";
+}
+
+.restaurantcard a {
+    color: var(--dimwhite);
+}
+
+.restaurantcard a:hover {
+    color: var(--lightgreen);
+}
+
+.cuisinetag {
+    background-color: var(--charcoal);
+    border: 2px solid var(--lightgreen);
+}
