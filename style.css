@@ -90,7 +90,11 @@ hr {
     padding: 0.4rem;
 
     background-color: var(--darkgreen);
+
     border: 2px solid var(--charcoal);
+    border-radius: 5px;
+
+    box-shadow: 0.25rem 0.25rem 4px black;
 }
 
 .restaurantcard:hover {
@@ -118,4 +122,24 @@ hr {
 .cuisinetag {
     background-color: var(--charcoal);
     border: 2px solid var(--lightgreen);
+    padding: 0.2rem;
+}
+
+.restaurantcard_cuisinesbox {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+
+@media (min-width: 500px) {
+    #cardlist {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-gap: 0.4rem;
+    }
+}
+
+@media (min-width: 800px) {
+    #cardlist {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
 }

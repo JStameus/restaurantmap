@@ -15,6 +15,7 @@ window.onload = () => {
 // --- API Settings ---
 let documenuKey = "";
 let APICallURL = "https://api.documenu.com/v2/restaurants/search/geo?lat=39&lon=-94&distance=5";
+
 // For using locally saved data
 let localURL = "./data.json";
 
@@ -43,31 +44,6 @@ searchButton.addEventListener("click", () => {
     }, 1000);
 });
 
-//const debugMarkerButton = document.querySelector("#button_addDebugMarker");
-//debugMarkerButton.addEventListener("click", () => {
-    //console.log("Adding debug marker...");
-    //if(debugMarkers.length > 1) {
-        //debugMarkers[0].remove();
-        //debugMarkers.shift();
-    //}
-    //createDebugMarker(getCenterCoordinates());
-//});
-
-//const checkDistanceButton = document.querySelector("#button_debugDistance");
-//checkDistanceButton.addEventListener("click", () => {
-    //console.log("Checking distance between debug markers.");
-    //debugDistance();
-//});
-
-//const rangeInput = document.querySelector("#input_searchrange");
-//rangeInput.addEventListener("input", () => {
-    //searchDistance = rangeInput.value;
-    //rangeDisplay.innerText = searchDistance;
-//});
-//
-//const rangeDisplay = document.querySelector("#searchrange_display");
-//rangeDisplay.innerText = searchDistance;
-
 map.on("dragend", () => {
     console.log(getCenterCoordinates());
     updateCenterMarker();
@@ -75,7 +51,7 @@ map.on("dragend", () => {
 
 // API call functions
 function fetchAPI(latitude, longitude, distance) {
-    clearRestaurantCards();
+   clearRestaurantCards();
     let fullUrl = `https://api.documenu.com/v2/restaurants/search/geo?lat=${latitude}&lon=${longitude}&distance=${distance}`;
     fetch(fullUrl, {headers: {"X-API-KEY": "8bb10903010e51cfb76da6d356c1d84d"}})
         .then(response => response.json())
@@ -131,30 +107,36 @@ function createRestaurantCard(data) {
     const restaurantStreet = document.createElement("h3");
     restaurantStreet.innerText = data.address.street;
     cardDiv.appendChild(restaurantStreet);
+    
+    if (data.cuisines.length > 1) {
+        const cuisesinesDiv = document.createElement("div");
+        cuisesinesDiv.className = "restaurantcard_cuisinesbox";
 
-    if (data.cuisines.length > 0) {
         for (let i = 0; i < data.cuisines.length; i++) {
             const newTag = document.createElement("h5");
             newTag.innerText = data.cuisines[i];
             newTag.className = "cuisinetag";
-            cardDiv.appendChild(newTag);
+            cuisesinesDiv.appendChild(newTag);
         }
+        cardDiv.appendChild(cuisesinesDiv);
+    } else {
+        console.log(`${data.restaurant_name} has no cuisines :(`);
     }
 
     const restaurantPhone = document.createElement("p");
     restaurantPhone.innerText = `Phone: ${data.restaurant_phone}`;
     cardDiv.appendChild(restaurantPhone);
-    const restaurantWebsite = document.createElement("a");
-    restaurantWebsite.innerText = data.restaurant_website;
-    restaurantWebsite.href = data.restaurant_website;
-    cardDiv.appendChild(restaurantWebsite);
+    const restaurantWebsiteLink = document.createElement("a");
+    restaurantWebsiteLink.target = "blank";
+    restaurantWebsiteLink.innerText = data.restaurant_website;
+    restaurantWebsiteLink.href = data.restaurant_website;
+    cardDiv.appendChild(restaurantWebsiteLink);
 
     cardDiv.className = "restaurantcard";
     cardList.appendChild(cardDiv);
 
     const newMarker = createRestaurantMarker(data);
     cardDiv.addEventListener("click", () => {
-        console.log(`Clicked on the card for ${data.restaurant_name}`);
         map.flyTo({
             center: newMarker.getLngLat()
         });
@@ -162,7 +144,6 @@ function createRestaurantCard(data) {
 }
 
 function createRestaurantMarker(data) {
-    console.log(`Creating marker for: ${data.restaurant_name}`);
     const newMarker = new mapboxgl.Marker()
         .setLngLat([data.geo.lon, data.geo.lat])
         .addTo(map);
