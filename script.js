@@ -89,6 +89,7 @@ function getCenterCoordinates() {
     return {lng: mapCenter.lng, lat: mapCenter.lat};
 }
 
+
 function clearRestaurantCards() {
     while (cardList.firstChild) {
         cardList.firstChild.remove();
@@ -98,10 +99,21 @@ function clearRestaurantCards() {
 
 // Uses data from the Documenu API
 function createRestaurantCard(data) {
+    // TODO: Get the coordinates for the restaurant
+    const restaurantCoordinates = data.getLngLat(); // This is bork'd
+    const restaurantDistance = centerMarker.distanceTo(restaurantCoordinates);
+
     const cardDiv = document.createElement("div");
 
-    const restaurantHeader = document.createElement("h2");
-    restaurantHeader.innerText = data.restaurant_name;
+    const restaurantDistanceLabel = document.createElement("h3");
+    restaurantDistanceLabel.innerText = `${restaurantDistance} away`;
+    const restaurantName = document.createElement("h2");
+    restaurantName.innerText = data.restaurant_name;
+    cardDiv.appendChild(restaurantName);
+
+    const restaurantHeader = document.createElement("div");
+    restaurantHeader.appendChild(restaurantName);
+    restaurantHeader.appendChild(restaurantDistanceLabel);
     cardDiv.appendChild(restaurantHeader);
 
     const restaurantStreet = document.createElement("h3");
