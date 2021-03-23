@@ -100,21 +100,21 @@ function clearRestaurantCards() {
 // Uses data from the Documenu API
 function createRestaurantCard(data) {
     // TODO: Get the coordinates for the restaurant
-    const restaurantCoordinates = data.getLngLat(); // This is bork'd
-    const restaurantDistance = centerMarker.distanceTo(restaurantCoordinates);
+    //const restaurantCoordinates = data.getLngLat(); // This is bork'd
+    //const restaurantDistance = centerMarker.distanceTo(restaurantCoordinates);
 
     const cardDiv = document.createElement("div");
 
-    const restaurantDistanceLabel = document.createElement("h3");
-    restaurantDistanceLabel.innerText = `${restaurantDistance} away`;
+    //const restaurantDistanceLabel = document.createElement("h3");
+    //restaurantDistanceLabel.innerText = `${restaurantDistance} away`;
     const restaurantName = document.createElement("h2");
     restaurantName.innerText = data.restaurant_name;
     cardDiv.appendChild(restaurantName);
 
-    const restaurantHeader = document.createElement("div");
-    restaurantHeader.appendChild(restaurantName);
-    restaurantHeader.appendChild(restaurantDistanceLabel);
-    cardDiv.appendChild(restaurantHeader);
+    //const restaurantHeader = document.createElement("div");
+    //restaurantHeader.appendChild(restaurantName);
+    //restaurantHeader.appendChild(restaurantDistanceLabel);
+    //cardDiv.appendChild(restaurantHeader);
 
     const restaurantStreet = document.createElement("h3");
     restaurantStreet.innerText = data.address.street;
