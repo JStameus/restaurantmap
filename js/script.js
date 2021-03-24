@@ -47,7 +47,7 @@ searchButton.addEventListener("click", () => {
     console.log("Searching...");
     const coordinates = getCenterCoordinates();
     setTimeout(() => {
-        fetchAPI(coordinates.lat, coordinates.lng, searchDistance);
+        fetchAPI(coordinates.lat, coordinates.lng, userOptions.searchDistance);
     }, 1000);
 });
 
@@ -97,44 +97,30 @@ function fetchLocal() {
         });
 }
 
-// Uses the MapBox API 
+// Uses the MapBox API to set new coordinates for where we are on the map.
 function getCenterCoordinates() {
     const mapCenter = map.transform._center;
     return {lng: mapCenter.lng, lat: mapCenter.lat};
 }
 
 
-function clearRestaurantCards() {
-    while (cardList.firstChild) {
-        cardList.firstChild.remove();
-    }
-    console.log("Cleared restaurant cards.");
-}
 
-// Uses data from the Documenu API
+// Uses data from the Documenu API to create a "card" for a restaurant with the
+// most important information.
 function createRestaurantCard(restaurant) {
-    // TODO: Get the coordinates for the restaurant
-    //const restaurantCoordinates = restaurant.getLngLat(); // This is bork'd
-    //const restaurantDistance = centerMarker.distanceTo(restaurantCoordinates);
 
     const cardDiv = document.createElement("div");
+    const card = new RestaurantCard(
+        restaurant.restaurant_name,
+        restaurant.address.street,
+        restaurant.restaurant_phone,
+        restaurant.restaurant_website
+    );
+    cardDiv.innerHTML = card.render();
 
-    //const restaurantDistanceLabel = document.createElement("h3");
-    //restaurantDistanceLabel.innerText = `${restaurantDistance} away`;
-    const restaurantName = document.createElement("h2");
-    restaurantName.innerText = restaurant.restaurant_name;
-    cardDiv.appendChild(restaurantName);
-
-    //const restaurantHeader = document.createElement("div");
-    //restaurantHeader.appendChild(restaurantName);
-    //restaurantHeader.appendChild(restaurantDistanceLabel);
-    //cardDiv.appendChild(restaurantHeader);
-
-    const restaurantStreet = document.createElement("h3");
-    restaurantStreet.innerText = restaurant.address.street;
-    cardDiv.appendChild(restaurantStreet);
-    
+    // If the restaurant has any cuisine tags, they'll be added now.
     if (restaurant.cuisines.length > 1) {
+        cardDiv.appendChild(document.createElement("hr"));
         const cuisesinesDiv = document.createElement("div");
         cuisesinesDiv.className = "restaurantcard_cuisinesbox";
 
@@ -147,24 +133,25 @@ function createRestaurantCard(restaurant) {
         cardDiv.appendChild(cuisesinesDiv);
     }
 
-    const restaurantPhone = document.createElement("p");
-    restaurantPhone.innerText = `Phone: ${restaurant.restaurant_phone}`;
-    cardDiv.appendChild(restaurantPhone);
-    const restaurantWebsiteLink = document.createElement("a");
-    restaurantWebsiteLink.target = "blank";
-    restaurantWebsiteLink.innerText = restaurant.restaurant_website;
-    restaurantWebsiteLink.href = restaurant.restaurant_website;
-    cardDiv.appendChild(restaurantWebsiteLink);
-
+    
     cardDiv.className = "restaurantcard";
     cardList.appendChild(cardDiv);
 
+    // Creating a marker and adding an event listener to the card so that the
+    // marker can be shown when the user clicks the card.
     const newMarker = createRestaurantMarker(restaurant);
     cardDiv.addEventListener("click", () => {
         map.flyTo({
             center: newMarker.getLngLat()
         });
     });
+}
+
+function clearRestaurantCards() {
+    while (cardList.firstChild) {
+        cardList.firstChild.remove();
+    }
+    console.log("Cleared restaurant cards.");
 }
 
 function createRestaurantMarker(restaurant) {
@@ -180,6 +167,9 @@ function updateCenterMarker() {
 }
 
 // Restaurant sorting and filtering
+
+// Returns true of the the specified restaurant has at least one of the tags the
+// user is searching for.
 function hasCuisineTag(restaurant, tag) {
     for(let i = 0; i < restaurant.cuisines.length; i++) {
         if(restaurant.cuisines[i] === tag) {
