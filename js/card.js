@@ -7,11 +7,11 @@ class RestaurantCard {
     }
 
     render() {
-        return `<div class="restaurantcard">
+        return `
                     <h2>${this.name}</h2> 
                     <h3>${this.street}</h3>
                     <p>${this.phone}</p>
                     <a href="${this.website}">Website</a>
-                </div>`
+                `
     }
 } 

@@ -1,3 +1,10 @@
+// User specified settings
+let userOptions = {
+    searchDistance: 5,
+    searchTags: [],
+    onlyShowTagMatches: false,
+}
+
 // Loading API Keys from local file
 window.onload = () => {
     fetch("../assets/env.json")
@@ -12,7 +19,7 @@ window.onload = () => {
         });
 }
 
-// --- API Settings ---
+// API Settings 
 let documenuKey = "";
 let APICallURL = "https://api.documenu.com/v2/restaurants/search/geo?lat=39&lon=-94&distance=5";
 
@@ -25,15 +32,15 @@ var map = new mapboxgl.Map({
     style: 'mapbox://styles/mapbox/streets-v11'
 });
 
-// --- App Settings ---
-let searchDistance = 5;
+// Globally available markers 
 let centerMarker = new mapboxgl.Marker({
     color: "#ff0000",
 });
 let debugMarkers = [];
 
-// --- DOM Elements ---
+// DOM Elements 
 const cardList = document.querySelector("#cardlist");
+const optionsMenu = document.querySelector("#optionsPanel");
 
 const searchButton = document.querySelector("#button_startSearch");
 searchButton.addEventListener("click", () => {
@@ -42,6 +49,11 @@ searchButton.addEventListener("click", () => {
     setTimeout(() => {
         fetchAPI(coordinates.lat, coordinates.lng, searchDistance);
     }, 1000);
+});
+
+const toggleMenuButton = document.querySelector("#button_toggleOptions");
+toggleMenuButton.addEventListener("click", () => {
+    toggleMenu();    
 });
 
 map.on("dragend", () => {
@@ -60,6 +72,8 @@ function fetchAPI(latitude, longitude, distance) {
             console.log(json)
             for(let i = 0; i < json.data.length; i++) {
                 createRestaurantCard(json.data[i]);
+                console.log(hasCuisineTag(json.data[i], "American"));
+                console.log("Tag match should be logged here");
             }
         })
         .catch(err => {
@@ -98,9 +112,9 @@ function clearRestaurantCards() {
 }
 
 // Uses data from the Documenu API
-function createRestaurantCard(data) {
+function createRestaurantCard(restaurant) {
     // TODO: Get the coordinates for the restaurant
-    //const restaurantCoordinates = data.getLngLat(); // This is bork'd
+    //const restaurantCoordinates = restaurant.getLngLat(); // This is bork'd
     //const restaurantDistance = centerMarker.distanceTo(restaurantCoordinates);
 
     const cardDiv = document.createElement("div");
@@ -108,7 +122,7 @@ function createRestaurantCard(data) {
     //const restaurantDistanceLabel = document.createElement("h3");
     //restaurantDistanceLabel.innerText = `${restaurantDistance} away`;
     const restaurantName = document.createElement("h2");
-    restaurantName.innerText = data.restaurant_name;
+    restaurantName.innerText = restaurant.restaurant_name;
     cardDiv.appendChild(restaurantName);
 
     //const restaurantHeader = document.createElement("div");
@@ -117,37 +131,35 @@ function createRestaurantCard(data) {
     //cardDiv.appendChild(restaurantHeader);
 
     const restaurantStreet = document.createElement("h3");
-    restaurantStreet.innerText = data.address.street;
+    restaurantStreet.innerText = restaurant.address.street;
     cardDiv.appendChild(restaurantStreet);
     
-    if (data.cuisines.length > 1) {
+    if (restaurant.cuisines.length > 1) {
         const cuisesinesDiv = document.createElement("div");
         cuisesinesDiv.className = "restaurantcard_cuisinesbox";
 
-        for (let i = 0; i < data.cuisines.length; i++) {
+        for (let i = 0; i < restaurant.cuisines.length; i++) {
             const newTag = document.createElement("h5");
-            newTag.innerText = data.cuisines[i];
+            newTag.innerText = restaurant.cuisines[i];
             newTag.className = "cuisinetag";
             cuisesinesDiv.appendChild(newTag);
         }
         cardDiv.appendChild(cuisesinesDiv);
-    } else {
-        console.log(`${data.restaurant_name} has no cuisines :(`);
     }
 
     const restaurantPhone = document.createElement("p");
-    restaurantPhone.innerText = `Phone: ${data.restaurant_phone}`;
+    restaurantPhone.innerText = `Phone: ${restaurant.restaurant_phone}`;
     cardDiv.appendChild(restaurantPhone);
     const restaurantWebsiteLink = document.createElement("a");
     restaurantWebsiteLink.target = "blank";
-    restaurantWebsiteLink.innerText = data.restaurant_website;
-    restaurantWebsiteLink.href = data.restaurant_website;
+    restaurantWebsiteLink.innerText = restaurant.restaurant_website;
+    restaurantWebsiteLink.href = restaurant.restaurant_website;
     cardDiv.appendChild(restaurantWebsiteLink);
 
     cardDiv.className = "restaurantcard";
     cardList.appendChild(cardDiv);
 
-    const newMarker = createRestaurantMarker(data);
+    const newMarker = createRestaurantMarker(restaurant);
     cardDiv.addEventListener("click", () => {
         map.flyTo({
             center: newMarker.getLngLat()
@@ -155,9 +167,9 @@ function createRestaurantCard(data) {
     });
 }
 
-function createRestaurantMarker(data) {
+function createRestaurantMarker(restaurant) {
     const newMarker = new mapboxgl.Marker()
-        .setLngLat([data.geo.lon, data.geo.lat])
+        .setLngLat([restaurant.geo.lon, restaurant.geo.lat])
         .addTo(map);
     return newMarker;
 }
@@ -166,6 +178,28 @@ function updateCenterMarker() {
     const coordinates = getCenterCoordinates();
     centerMarker.setLngLat([coordinates.lng, coordinates.lat]).addTo(map);
 }
+
+// Restaurant sorting and filtering
+function hasCuisineTag(restaurant, tag) {
+    for(let i = 0; i < restaurant.cuisines.length; i++) {
+        if(restaurant.cuisines[i] === tag) {
+            console.log(`Restaurant: ${restaurant} has tag: ${tag}`);
+            return true;
+        } 
+    } 
+    console.log(`Restaurant: ${restaurant} did not have the tag you are looking for.`);
+    return false;
+}
+
+// Manipulating user options
+function toggleMenu() {
+    if(optionsMenu.style.display == "block") {
+        optionsMenu.style.display = "none";
+    } else if (optionsMenu.style.display == "none") {
+        optionsMenu.style.display = "block";
+    }
+}
+
 
 // Debug functions
 function createDebugMarker(coordinates) {
