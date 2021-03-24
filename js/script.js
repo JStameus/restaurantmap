@@ -1,6 +1,6 @@
 // Loading API Keys from local file
 window.onload = () => {
-    fetch("./env.json")
+    fetch("../assets/env.json")
         .then(response => response.json())
         .then(json => {
             mapboxgl.accessToken = json.mapboxkey;
@@ -17,7 +17,7 @@ let documenuKey = "";
 let APICallURL = "https://api.documenu.com/v2/restaurants/search/geo?lat=39&lon=-94&distance=5";
 
 // For using locally saved data
-let localURL = "./data.json";
+let localURL = "../assets/data.json";
 
 mapboxgl.accessToken = "pk.eyJ1IjoianN0YW1ldXMiLCJhIjoiY2ttMzh5MXB1MjNtbDJxbHlicWdzc3NpeiJ9.mgv20WRpcdojJ8elyTdmyg";
 var map = new mapboxgl.Map({
