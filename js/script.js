@@ -108,8 +108,6 @@ function getCenterCoordinates() {
     return {lng: mapCenter.lng, lat: mapCenter.lat};
 }
 
-
-
 // Uses data from the Documenu API to create a "card" for a restaurant with the
 // most important information.
 function createRestaurantCard(restaurant) {
@@ -126,15 +124,19 @@ function createRestaurantCard(restaurant) {
     // If the restaurant has any cuisine tags, they'll be added now.
     if (restaurant.cuisines.length > 1) {
         cardDiv.appendChild(document.createElement("hr"));
+
         const cuisesinesDiv = document.createElement("div");
         cuisesinesDiv.className = "restaurantcard_cuisinesbox";
 
-        for (let i = 0; i < restaurant.cuisines.length; i++) {
-            const newTag = document.createElement("h5");
-            newTag.innerText = restaurant.cuisines[i];
-            newTag.className = "cuisinetag";
-            cuisesinesDiv.appendChild(newTag);
-        }
+        //for (let i = 0; i < restaurant.cuisines.length; i++) {
+            //const newTag = document.createElement("h5");
+            //newTag.innerText = restaurant.cuisines[i];
+            //newTag.className = "cuisinetag";
+            //cuisesinesDiv.appendChild(newTag);
+        //}
+        restaurant.cuisines.map(cuisine => {
+           console.log(cuisine);
+        });
         cardDiv.appendChild(cuisesinesDiv);
     }
 
