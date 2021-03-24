@@ -56,6 +56,11 @@ toggleMenuButton.addEventListener("click", () => {
     toggleMenu();    
 });
 
+const toggleMatchSearchButton = document.querySelector("#button_tagMatches");
+toggleMatchSearchButton.addEventListener("click", () => {
+    toggleSearchMatches();
+});
+
 map.on("dragend", () => {
     console.log(getCenterCoordinates());
     updateCenterMarker();
@@ -190,6 +195,17 @@ function toggleMenu() {
     }
 }
 
+function toggleSearchMatches() {
+    if(userOptions.onlyShowTagMatches === true) {
+        toggleMatchSearchButton.className = "button_off";
+        toggleMatchSearchButton.innerText = "Only show tag matches: No ";
+        userOptions.onlyShowTagMatches = false;
+    } else if (userOptions.onlyShowTagMatches === false) {
+        toggleMatchSearchButton.className = "button_on";
+        toggleMatchSearchButton.innerText = "Only show tag matches: Yes";
+        userOptions.onlyShowTagMatches = true;
+    }
+}
 
 // Debug functions
 function createDebugMarker(coordinates) {

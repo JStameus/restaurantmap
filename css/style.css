@@ -8,6 +8,7 @@
     --lightgreen: #CEEFBD;
     --charcoal: #35393B;
     --dimwhite: #EFEFEF;
+    --darkred: #B7384E;
 }
 * {
     padding: 0;
@@ -39,6 +40,7 @@ header button {
 
 button {
     margin: 0.2rem 2rem;
+    padding: 0.3rem 0.6rem;
 
     background-color: var(--darkgreen);
     color: var(--lightgreen);
@@ -61,6 +63,14 @@ button:active {
     background-color: var(--lightgreen);
     border: 2px solid var(--darkgreen);
     color: var(--charcoal);
+}
+
+.button_off {
+    background-color: var(--darkred);
+    border: 2px dashed var(--charcoal);
+}
+.button_on {
+    background-color: var(--darkgreen);
 }
 
 #app_container {
