@@ -1,9 +1,10 @@
 class RestaurantCard {
-    constructor(name, street, phone, website) {
+    constructor(name, street, phone, website, cuisines) {
         this.name = name;
         this.street = street;
         this.phone = phone;
         this.website = website;
+        this.cuisines = cuisines;
     }
 
     render() {

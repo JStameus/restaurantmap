@@ -17,7 +17,7 @@ window.onload = () => {
         .catch(err => {
             console.log(`ERROR: ${err}`);
         });
-}
+};
 
 // API Settings 
 let documenuKey = "";
@@ -74,11 +74,31 @@ function fetchAPI(latitude, longitude, distance) {
         .then(response => response.json())
         .then(json => {
             map.zoomTo(15.9);
+            console.log("-- DATA RECIEVED --");
             console.log(json)
-            for(let i = 0; i < json.data.length; i++) {
-                createRestaurantCard(json.data[i]);
-                console.log(hasCuisineTag(json.data[i], "American"));
-                console.log("Tag match should be logged here");
+
+            // If onlyShowTagMatches is on, filter out any restaurants that do
+            // not have at least one of the specified tags
+            if(userOptions.onlyShowTagMatches === true) {
+                let matchingRestaurants = [];
+                json.data.filter(restaurant => {
+                   // Loop through the user-specified tags and look for at least
+                   // one match by returning true on first match
+                   userOptions.searchTags.forEach(tag => {
+                        if(hasCuisineTag(restaurant, tag) == true) {
+                            matchingRestaurants.push(restaurant);
+                            return true;
+                        }
+                   });
+                   matchingRestaurants.forEach(restaurant => {
+                       createRestaurantCard(restaurant);
+                   });
+                });
+            } else {
+            // Otherwise, just create cards for all restaurants
+                json.data.forEach(restaurant => {
+                    createRestaurantCard(restaurant);
+                });
             }
         })
         .catch(err => {
@@ -111,7 +131,6 @@ function getCenterCoordinates() {
 // Uses data from the Documenu API to create a "card" for a restaurant with the
 // most important information.
 function createRestaurantCard(restaurant) {
-
     const cardDiv = document.createElement("div");
     const card = new RestaurantCard(
         restaurant.restaurant_name,
@@ -128,18 +147,14 @@ function createRestaurantCard(restaurant) {
         const cuisesinesDiv = document.createElement("div");
         cuisesinesDiv.className = "restaurantcard_cuisinesbox";
 
-        //for (let i = 0; i < restaurant.cuisines.length; i++) {
-            //const newTag = document.createElement("h5");
-            //newTag.innerText = restaurant.cuisines[i];
-            //newTag.className = "cuisinetag";
-            //cuisesinesDiv.appendChild(newTag);
-        //}
         restaurant.cuisines.map(cuisine => {
-           console.log(cuisine);
+            const newTag = document.createElement("h5");
+            newTag.innerText = cuisine;
+            newTag.className = "cuisinetag";
+            cuisesinesDiv.appendChild(newTag);
         });
         cardDiv.appendChild(cuisesinesDiv);
     }
-
     
     cardDiv.className = "restaurantcard";
     cardList.appendChild(cardDiv);
@@ -180,11 +195,11 @@ function updateCenterMarker() {
 function hasCuisineTag(restaurant, tag) {
     for(let i = 0; i < restaurant.cuisines.length; i++) {
         if(restaurant.cuisines[i] === tag) {
-            console.log(`Restaurant: ${restaurant} has tag: ${tag}`);
+            console.log(`Restaurant: ${restaurant.restaurant_name} has tag: ${tag}`);
             return true;
         } 
     } 
-    console.log(`Restaurant: ${restaurant} did not have the tag you are looking for.`);
+    console.log(`Restaurant: ${restaurant.restaurant_name} did not have the tag you are looking for.`);
     return false;
 }
 
@@ -223,3 +238,6 @@ function debugDistance() {
     const distance = pointA.distanceTo(pointB);
     console.log(distance);
 }
+
+userOptions.onlyShowTagMatches = true;
+userOptions.searchTags = ["American", "Burgers", "Asian"];
