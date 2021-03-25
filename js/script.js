@@ -76,26 +76,17 @@ function fetchAPI(latitude, longitude, distance) {
             map.zoomTo(15.9);
             console.log("-- DATA RECIEVED --");
             console.log(json)
+            console.log("-------------------");
 
             // If onlyShowTagMatches is on, filter out any restaurants that do
             // not have at least one of the specified tags
             if(userOptions.onlyShowTagMatches === true) {
-                let matchingRestaurants = [];
-                json.data.filter(restaurant => {
-                   // Loop through the user-specified tags and look for at least
-                   // one match by returning true on first match
-                   userOptions.searchTags.forEach(tag => {
-                        if(hasCuisineTag(restaurant, tag) == true) {
-                            matchingRestaurants.push(restaurant);
-                            return true;
-                        }
-                   });
-                   matchingRestaurants.forEach(restaurant => {
-                       createRestaurantCard(restaurant);
-                   });
-                });
+                let matchingRestaurants = json.data.filter(restaurant => hasCuisineTag(restaurant));
+                console.log("Matching restaurants:");
+                console.log(matchingRestaurants);
+                matchingRestaurants.forEach(restaurant => createRestaurantCard(restaurant));
             } else {
-            // Otherwise, just create cards for all restaurants
+                // Otherwise, just create cards for all restaurants
                 json.data.forEach(restaurant => {
                     createRestaurantCard(restaurant);
                 });
@@ -192,14 +183,18 @@ function updateCenterMarker() {
 
 // Returns true of the the specified restaurant has at least one of the tags the
 // user is searching for.
-function hasCuisineTag(restaurant, tag) {
-    for(let i = 0; i < restaurant.cuisines.length; i++) {
-        if(restaurant.cuisines[i] === tag) {
-            console.log(`Restaurant: ${restaurant.restaurant_name} has tag: ${tag}`);
-            return true;
-        } 
-    } 
-    console.log(`Restaurant: ${restaurant.restaurant_name} did not have the tag you are looking for.`);
+function hasCuisineTag(restaurant) {
+    // For every tag specified by the user, loop through all the cuisines in the
+    // restaurant and look for a match
+    userOptions.searchTags.forEach(searchTag => {
+        restaurant.cuisines.forEach(cuisine => {
+            if(cuisine == searchTag) {
+                console.log(`${restaurant.restaurant_name}: Match found!`);
+                return true;
+            }
+        })
+    }); 
+    // If no matches were found, return false
     return false;
 }
 
@@ -239,5 +234,4 @@ function debugDistance() {
     console.log(distance);
 }
 
-userOptions.onlyShowTagMatches = true;
 userOptions.searchTags = ["American", "Burgers", "Asian"];
